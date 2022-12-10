@@ -21,11 +21,28 @@ const wss = new WebSocket.Server({ server }); //브라우저와 서버의 연결
 
 //socket은 누군가와 연결될지 판단하는 연락망
 //wss의 connection 이벤트 감지
+
+const sockets = []; //서버와 연결된 브라우저 소켓들
+
 wss.on("connection", (socket) => {
+  sockets.push(socket);
+  socket["nickname"] = "Anon"; //닉네임 초기화
   console.log("Connected to Browser V");
   socket.on("close", () => console.log("Disconnected from browser X")); //브라우저와의 연결이 끊어지는 이벤트체크
-  socket.on("message", (message) => console.log(message.toString("utf8"))); //브라우저로부터 받는 메시지
-  socket.send("hello!"); //소켓 고유의 send메시지로 브라우저에게 메시지 송신
+  socket.on("message", (msg) => {
+    const message = JSON.parse(msg); //string을 다시 객체화
+
+    switch (message.type) {
+      case "new_message": //타입에 따라 메시지처리
+        sockets.forEach((aSocket) =>
+          aSocket.send(`${socket.nickname}: ${message.payload}`)
+        );
+        break;
+      case "nickname": //타입에 따라 닉네임처리
+        socket["nickname"] = message.payload; //소켓 객체에 닉네임을 추가
+        break;
+    }
+  });
 });
 //브라우저와 연결된 소켓
 
