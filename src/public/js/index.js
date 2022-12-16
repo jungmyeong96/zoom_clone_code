@@ -2,7 +2,7 @@ const messageList = document.querySelector("ul");
 const nickForm = document.querySelector("#nick");
 const messageForm = document.querySelector("#message"); //html의 기능을 재정의
 
-const socket = new WebSocket(`ws://${window.location.host}`); //브라우저에서 지원하는 웹소켓
+const socket = new WebSocket(`ws\://${window.location.host}`); //브라우저에서 지원하는 웹소켓
 //localhost:3000 => window.location.host 모바일을 지원하기 위해 변경
 //연결할 서버 소켓
 

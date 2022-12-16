@@ -2,6 +2,8 @@ import http from "http";
 import WebSocket from "ws";
 import express from "express";
 
+//소켓 IO추가할것
+
 const app = express();
 
 app.set("view engine", "pug");
